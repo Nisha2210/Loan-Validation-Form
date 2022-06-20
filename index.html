@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOAN APPLICATION</title>
+    
+    <link rel="stylesheet" href="style.css">
+    //link to the style sheet
+    
+</head>
+<style>
+
+body {
+    padding: 10px 50px;
+    background-color: aquamarine;
+}
+
+.formdesign {
+    font-size: 20px;
+
+}
+
+.formdesign input {
+    
+    width: 50%;  
+    padding: 12px 20px;
+    border: 1px solid blue;
+    margin: 14px;
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+.formerror {
+    color: red;
+}
+
+.but {
+    border-radius: 9px;
+    width: 100px;
+    height: 50px;
+    font-size: 25px;
+    margin: 22px 20px;
+}
+.PAN
+    {
+        text-transform: uppercase;
+    }
+    .error
+    {
+        color: Red;
+        visibility: hidden;
+    }
+</style>
+<body>
+    
+    <h1>   Loan Application Form   </h1>
+    <form aciton ="/myaction.php" name="myForm" onsubmit="return validateForm()" method="post">
+        <div class="formdesign" id="name">
+            Name: <input type="text" name="fname" ><b><span class="formerror"> </span></b>
+        
+        </div>
+
+        <div class="formdesign" id="email">
+            Email: <input type="text" name="femail" ><b><span class="formerror"> </span></b>
+        </div>
+
+        <div class="formdesign" id="pan">
+            PAN: <input type="text" name="fpan" maxlength="10" placeholder="like BBHPM5672K" required><b><span class="formerror"></span></b>
+        </div>
+
+        <div class="formdesign" id="loan">
+            Loan amount: <input type="text" name="floan" placeholder="Enter Loan Amount" required><b><span class="formerror"</span></b>
+        </div>
+        <input class="but" type="submit" value="Submit">
+        
+       
+        //form name shown in this field
+        //below inputs are useful at user side to fetch data from user and update that data into system
+    
+</body>
+
+<script src="index.js"></script>
+    <script>
+        function clearErrors(){
+            //this clear error checks the value by their class name
+       errors = document.getElementsByClassName('formerror');
+    for(let item of errors)
+{
+    item.innerHTML = "";
+}
+
+
+}
+    function ValidatePAN() {//pan number validation 
+        var txtPANCard = document.getElementById("pan");
+        var lblPANCard = document.getElementById("pan")
+        var regex = /([A-Z]){5}([0-9]){4}([A-Z]){1}$/;
+        if (regex.test(pan.toUpperCase())) {
+            lblPANCard.style.visibility = "hidden";
+            return true;
+        } else {
+            lblPANCard.style.visibility = "visible";
+            return false;
+        }
+    }
+
+function seterror(id, error){
+//sets error inside tag of id 
+element = document.getElementById(id);
+element.getElementsByClassName('formerror')[0].innerHTML = error;
+
+
+}
+function validateForm(){
+    var returnval = true;//by default this value is true
+    clearErrors();
+
+    //perform validation and if validation fails, set the value of returnval to false
+    var name = document.forms['myForm']["fname"].value;
+    if (name.length<5){
+        //if the value is less than 5
+        seterror("name", "*Length of name is too short");
+        returnval = false;//if this codition is true then form will not submit
+    }
+
+    if (name.length == 0){
+        //if the value is empty
+        seterror("name", "*Length of name cannot be zero!");
+        returnval = false;//if this codition is true then form will not submit
+    }
+
+    var email = document.forms['myForm']["femail"].value;
+    if (email.length>25){
+        //email id is not greater than 25 
+        seterror("email", "*Email length is too long");
+        returnval = false;//if this codition is true then form will not submit
+    }
+    var loan=document.forms['myForm']["fpan"].value;
+    if(loan.length>10){
+        //loan amount is not more than 9 digit 
+        seterror("pan","please enter 9 digit only");
+        returnval =false;//if this codition is true then form will not submit
+    }
+
+    return returnval;
+}
+function generateCaptcha()
+         {//
+             var alpha = new Array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');
+             var i;
+             //declaration of array and i 
+             for (i=0;i<4;i++){//check the value from 0 to 4
+               var a = alpha[Math.floor(Math.random() * alpha.length)];
+               var b = alpha[Math.floor(Math.random() * alpha.length)];
+               var c = alpha[Math.floor(Math.random() * alpha.length)];
+               var d = alpha[Math.floor(Math.random() * alpha.length)];
+              }
+            var code = a + '' + b + '' + '' + c + '' + d;
+            document.getElementById("mainCaptcha").value = code
+          }
+          function CheckValidCaptcha(){
+              var string1 = removeSpaces(document.getElementById('mainCaptcha').value);
+              var string2 = removeSpaces(document.getElementById('txtInput').value);
+              if (string1 == string2){
+         document.getElementById('success').innerHTML = "Form is validated Successfully";
+         //alert("Form is validated Successfully");
+                return true;
+              }
+              else{       
+         document.getElementById('error').innerHTML = "Please enter a valid captcha."; 
+         //alert("Please enter a valid captcha.");
+                return false;
+         
+              }
+        }
+          function removeSpaces(string){
+            return string.split(' ').join('');
+          }
+      </script>    
+   </head>
+   <body onload="generateCaptcha();">
+      <center>
+         <h1>Please fill the following fields to validate.</h1>
+         <table>
+            <tr>
+               <td>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <input type="text" id="mainCaptcha"readonly="readonly"/>
+                  <input type="button" id="refresh" value="Refresh"  onclick="generateCaptcha();" />
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <input type="text" id="txtInput"/>    
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <input id="Button1" type="button" value="Check" onclick="CheckValidCaptcha();"/>
+               </td>
+            </tr>
+            <tr>
+               <td><span id="error" style="color:red"></span></td>
+            </tr>
+            <tr>
+               <td><span id="success" style="color:green"></span></td>
+            </tr>
+         </table>
+      </center>
+
+    </body>
+
+</form>
+</script>
+
+</html>
